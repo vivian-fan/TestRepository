@@ -43,7 +43,7 @@ jobs:
       - name: Step2 - Update pom file
         uses: Mudlet/xmlstarlet-action@master
         with:
-        args: ed --update //project/version --value ${{ github.event.inputs.newReleaseNumber }}
+            args: ed --update //project/version --value ${{ github.event.inputs.newReleaseNumber }}
       
       - name: Step7 - Auto commit updated version in pom.xml
         id: commitPomFile
