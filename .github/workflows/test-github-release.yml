@@ -20,12 +20,6 @@ jobs:
     name: Commit latest release number to pom file
     runs-on: ubuntu-latest
     env:                 
-      serverUrl: ${{ secrets.DEPLOY_PACKAGES_URL }}
-      accessId: ${{ secrets.DEPLOY_PACKAGES_ID }}
-      accessToken: ${{ secrets.DEPLOY_PACKAGES_TOKEN }}
-      ZK_License_User: ${{ secrets.ZK_License_User }}      
-      ZK_License_Password: ${{ secrets.ZK_License_Password }}
-      jemini_ui: jemini-ui
       branch: ${{ github.ref }}
 
     steps: 
