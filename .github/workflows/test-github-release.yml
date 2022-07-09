@@ -1,0 +1,135 @@
+# This workflow is used to create Jemini release for docker and deploy to Azure Container Registry
+# Trigger Azure DevOps 
+name: Test-Github-Release
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      newReleaseNumber:
+        description: 'Release number'
+        required: true
+    
+
+#============================================================================
+####################### Commit latest release number  #######################
+#============================================================================
+jobs:
+  # Commit latest release number
+  commit_latest_release_number:    
+    name: Commit latest release number to pom file
+    runs-on: ubuntu-latest
+    env:                 
+      serverUrl: ${{ secrets.DEPLOY_PACKAGES_URL }}
+      accessId: ${{ secrets.DEPLOY_PACKAGES_ID }}
+      accessToken: ${{ secrets.DEPLOY_PACKAGES_TOKEN }}
+      ZK_License_User: ${{ secrets.ZK_License_User }}      
+      ZK_License_Password: ${{ secrets.ZK_License_Password }}
+      jemini_ui: jemini-ui
+      branch: ${{ github.ref }}
+
+    steps: 
+      - name: Display initial values
+        
+        run: |
+          echo "GITHUB_SHA : ${{ env.GITHUB_SHA }}"
+          echo "$GITHUB_CONTEXT"
+          
+      - name: Step1 - Checkout branch from Github
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ env.branch }}
+        
+      - name: Step2 - Update pom file
+        uses: Mudlet/xmlstarlet-action@master
+        with:
+        args: ed --update //version --value ${{ github.event.inputs.newReleaseNumber }}
+      
+      - name: Step7 - Auto commit updated version in pom.xml
+        id: commitPomFile
+        uses: EndBug/add-and-commit@v9
+        with:
+          # Default: '.'
+          add: '*/pom.xml --force'
+
+          # The name of the user that will be displayed as the author of the commit.
+          author_name: "${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>"
+
+          # The email of the user that will be displayed as the author of the commit.
+          author_email: "actions@github.com"
+
+          # The name of the custom committer you want to use, if different from the author of the commit.
+          committer_name: "GitHub Actions"
+
+          # The email of the custom committer you want to use, if different from the author of the commit.
+          committer_email: "actions@github.com"
+
+          # The local path to the directory where your repository is located. You should use actions/checkout first to set it up.
+          # Default: '.'
+          cwd: '.'
+
+          # Determines the way the action fills missing author name and email. Three options are available:
+          # - github_actor -> UserName <UserName@users.noreply.github.com>
+          # - user_info -> Your Display Name <your-actual@email.com>
+          # - github_actions -> github-actions <email associated with the github logo>
+          # Default: github_actor
+          default_author: github_actor
+
+          # The message for the commit.
+          # Default: 'Commit from GitHub Actions (name of the workflow)'
+          message: "Latest version v${{ github.event.inputs.newReleaseNumber }} updated in pom.xml"
+
+          # The way the action should handle pathspec errors from the add and remove commands. Three options are available:
+          # - ignore -> errors will be logged but the step won't fail
+          # - exitImmediately -> the action will stop right away, and the step will fail
+          # - exitAtEnd -> the action will go on, every pathspec error will be logged at the end, the step will fail.
+          # Default: ignore
+          pathspec_error_handling: ignore
+
+          # Whether to push the commit and, if any, its tags to the repo. It can also be used to set the git push arguments (see the paragraph below for more info)
+          # Default: true
+          push: true
+
+          # Arguments for the git tag command (the tag name always needs to be the first word not preceded by an hyphen)
+          # Default: ''
+          tag: 'v${{ github.event.inputs.newReleaseNumber }} --force'
+          
+          # Arguments for the git push --tags command (any additional argument will be added after --tags)
+          # Default: ''
+          tag_push: '--force'
+    
+    outputs:
+       releaseSHA: ${{ steps.commitPomFile.outputs.commit_long_sha }}
+
+#========================================================================
+########################## Create Github Release  #######################
+#========================================================================
+  #Trigger Jemini Azure DevOps Release Pipeline for devtest environments
+  create_github_release: 
+    name: Create GitHub Release 
+    needs: [commit_latest_release_number]    
+    runs-on: ubuntu-latest
+    env:
+      branch: ${{ github.ref }}
+      runNumber: ${{ github.run_number }}
+      
+    steps:
+
+      #Update GITHUB_SHA to latest commit if release, this is used to create Github release in Step4
+      - name: Update GITHUB_SHA to latest commit
+        run: |
+          echo "GITHUB_SHA=${{ needs.commit_latest_release_number.outputs.releaseSHA }}" >> $GITHUB_ENV
+          echo "GITHUB_SHA : ${{ env.GITHUB_SHA }}"
+          echo "$GITHUB_CONTEXT"
+          
+      - name: Step1 - Create a GitHub Release
+        uses: "marvinpinto/action-automatic-releases@v1.2.1"
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          draft: false
+          prerelease: false
+          automatic_release_tag: "v${{ github.event.inputs.newReleaseNumber }}"
+          title: "v${{ github.event.inputs.newReleaseNumber }}"
+          
+  
+
