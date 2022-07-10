@@ -28,7 +28,8 @@ jobs:
       - name: Display initial values
         run: |
           echo "GITHUB_SHA : $GITHUB_SHA"
-          echo "$GITHUB_CONTEXT : $GITHUB_CONTEXT"
+          echo "GITHUB_CONTEXT : $GITHUB_CONTEXT
+          echo ${{ process.env.GITHUB_SHA }}
           
       - name: Step1 - Checkout branch from Github
         uses: actions/checkout@v3
@@ -40,7 +41,7 @@ jobs:
         with:
             args: ed --update //project/version --value ${{ github.event.inputs.newReleaseNumber }} pom.xml
       
-      - name: Step7 - Auto commit updated version in pom.xml
+      - name: Step3 - Auto commit updated version in pom.xml
         id: commitPomFile
         uses: EndBug/add-and-commit@v9
         with:
