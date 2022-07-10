@@ -46,7 +46,7 @@ jobs:
         uses: EndBug/add-and-commit@v9
         with:
           # Default: '.'
-          add: './pom.xml --force'
+          add: '. --force'
 
           # The name of the user that will be displayed as the author of the commit.
           author_name: "${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>"
