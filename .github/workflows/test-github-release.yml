@@ -37,16 +37,19 @@ jobs:
           ref: ${{ env.branch }}
         
       - name: Step2 - Update pom file
-        uses: Mudlet/xmlstarlet-action@master
+        uses: jacobtomlinson/gha-find-replace@v2
         with:
-            args: ed --update //project/version --value ${{ github.event.inputs.newReleaseNumber }} pom.xml
-      
+          include: "pom.xml"
+          find: "{version}"
+          replace: ${{ github.event.inputs.newReleaseNumber }}
+          regex: false
+       
       - name: Step3 - Auto commit updated version in pom.xml
         id: commitPomFile
         uses: EndBug/add-and-commit@v9
         with:
           # Default: '.'
-          add: '. --force'
+          add: 'pom.xml --force'
 
           # The name of the user that will be displayed as the author of the commit.
           author_name: "${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>"
