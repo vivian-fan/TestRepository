@@ -28,8 +28,8 @@ jobs:
       - name: Display initial values
         run: |
           echo "GITHUB_SHA : $GITHUB_SHA"
-          echo "GITHUB_CONTEXT : $GITHUB_CONTEXT
-          echo ${{ process.env.GITHUB_SHA }}
+          echo "GITHUB_CONTEXT : $GITHUB_CONTEXT"
+          echo "github.sha : ${{ github.sha }}"
           
       - name: Step1 - Checkout branch from Github
         uses: actions/checkout@v3
