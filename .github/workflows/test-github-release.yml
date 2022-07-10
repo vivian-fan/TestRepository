@@ -9,7 +9,9 @@ on:
       newReleaseNumber:
         description: 'Release number'
         required: true
-    
+        
+env:
+    GITHUB_CONTEXT: ${{ toJSON(github) }}
 
 #============================================================================
 ####################### Commit latest release number  #######################
@@ -24,10 +26,9 @@ jobs:
 
     steps: 
       - name: Display initial values
-        
         run: |
-          echo "GITHUB_SHA : ${{ env.GITHUB_SHA }}"
-          echo "$GITHUB_CONTEXT"
+          echo "GITHUB_SHA : $GITHUB_SHA"
+          echo "$GITHUB_CONTEXT : $GITHUB_CONTEXT"
           
       - name: Step1 - Checkout branch from Github
         uses: actions/checkout@v3
@@ -44,7 +45,7 @@ jobs:
         uses: EndBug/add-and-commit@v9
         with:
           # Default: '.'
-          add: '*/pom.xml --force'
+          add: 'pom.xml --force'
 
           # The name of the user that will be displayed as the author of the commit.
           author_name: "${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>"
@@ -113,8 +114,8 @@ jobs:
       - name: Update GITHUB_SHA to latest commit
         run: |
           echo "GITHUB_SHA=${{ needs.commit_latest_release_number.outputs.releaseSHA }}" >> $GITHUB_ENV
-          echo "GITHUB_SHA : ${{ env.GITHUB_SHA }}"
-          echo "$GITHUB_CONTEXT"
+          echo "GITHUB_SHA : $GITHUB_SHA"
+          echo "$GITHUB_CONTEXT : $GITHUB_CONTEXT"
           
       - name: Step1 - Create a GitHub Release
         uses: "marvinpinto/action-automatic-releases@v1.2.1"
