@@ -2,4 +2,4 @@ New File
 
 Changed for release 8
 
-Changed for release 9
+Changed for release 9 - This is some added text for release 9.
