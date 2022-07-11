@@ -25,11 +25,6 @@ jobs:
       branch: ${{ github.ref }}
 
     steps: 
-      - name: Display initial values
-        run: |
-          echo "GITHUB_SHA : $GITHUB_SHA"
-          echo "GITHUB_CONTEXT : $GITHUB_CONTEXT"
-          echo "github.sha : ${{ github.sha }}"
           
       - name: Step1 - Checkout branch from Github
         uses: actions/checkout@v3
@@ -111,29 +106,20 @@ jobs:
     env:
       branch: ${{ github.ref }}
       runNumber: ${{ github.run_number }}
+      releaseSHA: ${{ needs.commit_latest_release_number.outputs.releaseSHA }}
       
     steps:
 
-      #Update GITHUB_SHA to latest commit if release, this is used to create Github release in Step4
-      - name: Update GITHUB_SHA to latest commit
-        run: |
-          echo "GITHUB_SHA=${{ needs.commit_latest_release_number.outputs.releaseSHA }}" >> $GITHUB_ENV
-          ${{ github.sha=needs.commit_latest_release_number.outputs.releaseSHA }}
- 
-      - name: Display variables
-        run: |
-          echo "GITHUB_SHA : $GITHUB_SHA"
-          echo "github.sha : ${{ github.sha }}
-          echo "GITHUB_CONTEXT : $GITHUB_CONTEXT"
-          
       - name: Step1 - Create a GitHub Release
-        uses: "marvinpinto/action-automatic-releases@v1.2.1"
+
+        uses: softprops/action-gh-release@v1
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           draft: false
           prerelease: false
-          automatic_release_tag: "v${{ github.event.inputs.newReleaseNumber }}"
-          title: "v${{ github.event.inputs.newReleaseNumber }}"
+          target_commitish: ${{ needs.commit_latest_release_number.outputs.releaseSHA }}
+          tag_name: "v${{ github.event.inputs.newReleaseNumber }}"
+          generate_release_notes: true
           
   
 
