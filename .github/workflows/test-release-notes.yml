@@ -31,7 +31,7 @@ jobs:
         id: buildChangelog
         uses: mikepenz/release-changelog-builder-action@v3
         with:
-          configuration: "changelog-config.json"
+          configuration: ".github/changelog-config.json"
           token: ${{ secrets.GITHUB_TOKEN }}
           toTag: "v${{ github.event.inputs.newReleaseNumber }}" 
           
@@ -40,6 +40,4 @@ jobs:
           cat << "EOF"
           ${{ steps.buildChangelog.outputs.changelog }}
           EOF
-    
-
-  
+   
