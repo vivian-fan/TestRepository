@@ -1,13 +1,15 @@
-name: PR Branch Labeler
+name: Pull Request Labeler
 
-on: pull_request
-
+on:
+  pull_request:
+    types:
+      - closed
 jobs:
-  label_prs:
+  if_merged:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
-    - name: Label PRs
-      if: github.event.action == 'opened' # Only run the action when the PR was first opened
+    - name: Label Pull Request
       uses: ffittschen/pr-branch-labeler@v1
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
