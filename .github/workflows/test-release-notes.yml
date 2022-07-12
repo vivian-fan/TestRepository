@@ -15,7 +15,7 @@ on:
 jobs:
   # Build release notes
   build_release_notes:    
-    name: Commit latest release number to pom file
+    name: Build release notes
     runs-on: ubuntu-latest
     env:                 
       branch: ${{ github.ref }}
