@@ -114,18 +114,6 @@ jobs:
         with:
           ref: ${{ env.branch }}
     
-      - name: Generate changelog
-        id: changelog
-        uses: metcalfc/changelog-generator@v3.0.0
-        with:
-          myToken: ${{ secrets.GITHUB_TOKEN }}
-          
-      - name: Output changelog
-        run: |
-          cat << "EOF"
-          ${{ steps.changelog.outputs.changelog }}
-          EOF
-
       - name: Create a GitHub Release
         uses: softprops/action-gh-release@v1
         with:
@@ -134,7 +122,7 @@ jobs:
           prerelease: false
           target_commitish: ${{ needs.commit_latest_release_number.outputs.releaseSHA }}
           tag_name: "v${{ github.event.inputs.newReleaseNumber }}"
-          generate_release_notes: true
+          generate_release_notes: false
           
   
 
