@@ -8,9 +8,6 @@ on:
       newReleaseNumber:
         description: 'Release number'
         required: true
-        
-env:
-   
 
 #============================================================================
 ####################### Build release    #######################
