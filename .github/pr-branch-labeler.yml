@@ -7,5 +7,5 @@ bugfix:
   head: ["bugfix/*"]
   
 # Apply label "hotfix" if base matches "hotfix/*"
-bugfix:
+hotfix:
   base: ["hotfix/*"]  
