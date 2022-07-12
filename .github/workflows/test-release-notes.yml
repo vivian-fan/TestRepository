@@ -13,8 +13,8 @@ on:
 ####################### Build release    #######################
 #============================================================================
 jobs:
-  # Commit latest release number
-  commit_latest_release_number:    
+  # Build release notes
+  build_release_notes:    
     name: Commit latest release number to pom file
     runs-on: ubuntu-latest
     env:                 
