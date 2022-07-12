@@ -1,0 +1,47 @@
+# This workflow is used to test release notes action
+name: Test-Release-Notes
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      newReleaseNumber:
+        description: 'Release number'
+        required: true
+        
+env:
+   
+
+#============================================================================
+####################### Build release    #######################
+#============================================================================
+jobs:
+  # Commit latest release number
+  commit_latest_release_number:    
+    name: Commit latest release number to pom file
+    runs-on: ubuntu-latest
+    env:                 
+      branch: ${{ github.ref }}
+
+    steps: 
+          
+      - name: Step1 - Checkout branch from Github
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ env.branch }}
+        
+      - name: Build Changelog
+        id: buildChangelog
+        uses: mikepenz/release-changelog-builder-action@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          toTag: "v${{ github.event.inputs.newReleaseNumber }}" 
+          
+      - name: Output changelog
+        run: |
+          cat << "EOF"
+          ${{ steps.buildChangelog.outputs.changelog }}
+          EOF
+    
+
+  
