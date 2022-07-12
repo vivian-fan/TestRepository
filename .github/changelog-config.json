@@ -45,15 +45,12 @@
     "max_tags_to_fetch": 200,
     "max_pull_requests": 200,
     "max_back_track_time_days": 365,
-    "exclude_merge_branches": [
-      "main/qa"
-    ],
-    "tag_resolver": {
-      "method": "semver",
-      "filter": {
-        "pattern": "api-(.+)",
-        "flags": "gu"
-      }
+    exclude_merge_branches: [],
+    tag_resolver: {
+        // defines the logic on how to resolve the previous tag, only relevant if `fromTag` is not specified
+        method: 'semver', 
+        filter: undefined, // filter out all tags not matching the regex
+        transformer: undefined // transforms the tag name using the regex, run after the filter
     },
     "base_branches": [
       "develop"
