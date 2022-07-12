@@ -1,14 +1,5 @@
 {
-    "categories": [
-      {
-        "title": "## 🚀 Features",
-        "labels": ["feature"]
-      },
-      {
-        "title": "## 🐛 Bug fixes",
-        "labels": ["bugfix"]
-      }
-    ],
+    "categories": [],
     "ignore_labels": [
       "ignore","release"
     ],
@@ -16,8 +7,8 @@
       "order": "ASC",
       "on_property": "mergedAt"
     },
-    "template": "${{CHANGELOG}}\n\n<details>\n<summary>Uncategorized</summary>\n\n${{UNCATEGORIZED}}\n</details>\n\n${{RELEASE_DIFF}}",
-    "pr_template": "- ${{TITLE}} (${{URL}})\n",
+    "template": "${{UNCATEGORIZED}}\n\n",
+    "pr_template": "- ${{TITLE}}\n${{BODY}}\n\n",
     "empty_template": "- no changes",
     "label_extractor": [],
     "transformers": [], 
