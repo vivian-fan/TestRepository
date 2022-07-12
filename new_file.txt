@@ -1,3 +1,4 @@
 New File
 
 Changed for release 8
+Added hotfix for release 8
