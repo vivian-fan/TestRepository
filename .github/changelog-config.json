@@ -20,7 +20,7 @@
     "pr_template": "- ${{TITLE}} (${{URL}})\n",
     "empty_template": "- no changes",
     "label_extractor": [],
-    "duplicate_filter": undefined, // extract an identifier from a PR used to detect duplicates, will keep the last match (depends on `sort`)
+    "duplicate_filter": "", // extract an identifier from a PR used to detect duplicates, will keep the last match (depends on `sort`)
     "transformers": [], // transformers to apply on the PR description according to the `pr_template`
     "max_tags_to_fetch": 200,
     "max_pull_requests": 200,
@@ -28,9 +28,9 @@
     "exclude_merge_branches": [],
     "tag_resolver": {
         // defines the logic on how to resolve the previous tag, only relevant if `fromTag` is not specified
-        "method": 'semver', 
-        "filter": undefined, // filter out all tags not matching the regex
-        "transformer": undefined // transforms the tag name using the regex, run after the filter
+        "method": "semver", 
+        "filter": "", // filter out all tags not matching the regex
+        "transformer": "" // transforms the tag name using the regex, run after the filter
     },
     "base_branches": [
       "develop"
