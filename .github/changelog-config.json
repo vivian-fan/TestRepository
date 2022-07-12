@@ -28,7 +28,7 @@
     "exclude_merge_branches": [],
     "tag_resolver": {
         "method": "semver", 
-        "filter": undefined, 
+        "filter": "", 
         "transformer": "" 
     },
     "base_branches": [
