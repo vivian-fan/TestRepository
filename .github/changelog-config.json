@@ -6,7 +6,7 @@
       },
       {
         "title": "## 🐛 Bug fixes",
-        "labels": ["bugfix"]
+        "labels": ["bug"]
       }
     ],
     "ignore_labels": [
@@ -17,31 +17,11 @@
       "on_property": "mergedAt"
     },
     "template": "${{CHANGELOG}}\n\n<details>\n<summary>Uncategorized</summary>\n\n${{UNCATEGORIZED}}\n</details>\n\n${{RELEASE_DIFF}}",
-    "pr_template": "- ${{TITLE}}\n   - PR: #${{NUMBER}}",
+    "pr_template": "- ${{TITLE}} (${{URL}})\n",
     "empty_template": "- no changes",
-    "label_extractor": [
-      {
-        "pattern": "(.) (.+)",
-        "target": "$1",
-        "flags": "gu"
-      },
-      {
-        "pattern": "\\[Issue\\]",
-        "on_property": "title",
-        "method": "match"
-      }
-    ],
-    "duplicate_filter": {
-      "pattern": "\\[ABC-....\\]",
-      "on_property": "title",
-      "method": "match"
-    },
-    "transformers": [
-      {
-        "pattern": "[\\-\\*] (\\[(...|TEST|CI|SKIP)\\])( )?(.+?)\n(.+?[\\-\\*] )(.+)",
-        "target": "- $4\n  - $6"
-      }
-    ],
+    "label_extractor": [],
+    "duplicate_filter": undefined, // extract an identifier from a PR used to detect duplicates, will keep the last match (depends on `sort`)
+    "transformers": [], // transformers to apply on the PR description according to the `pr_template`
     "max_tags_to_fetch": 200,
     "max_pull_requests": 200,
     "max_back_track_time_days": 365,
