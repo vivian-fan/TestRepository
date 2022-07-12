@@ -6,7 +6,7 @@
       },
       {
         "title": "## 🐛 Bug fixes",
-        "labels": ["bug"]
+        "labels": ["bugfix"]
       }
     ],
     "ignore_labels": [
