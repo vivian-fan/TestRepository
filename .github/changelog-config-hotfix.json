@@ -17,6 +17,6 @@
     "max_back_track_time_days": 365,
     "exclude_merge_branches": [],
     "base_branches": [
-      "hotfix/*"
+      "^hotfix\/"
     ]
 }
