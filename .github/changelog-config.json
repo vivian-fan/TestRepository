@@ -20,7 +20,7 @@
     "tag_resolver": {
       "method": "semver",
       "filter": {
-        "pattern": "(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0\\d*)+[-SNAPSHOT]*[-]?\\d*"
+        "pattern": "^v(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0\\d*)+[-SNAPSHOT]*[-]?\\d*"
       }
     },
     "max_tags_to_fetch": 200,
