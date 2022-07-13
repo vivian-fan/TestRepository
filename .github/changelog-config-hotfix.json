@@ -1,17 +1,21 @@
 {
     "categories": [],
     "ignore_labels": [
-      "ignore","release"
+      "release"
     ],
     "sort": {
       "order": "ASC",
       "on_property": "mergedAt"
     },
-    "template": "${{UNCATEGORIZED}}\n\n",
-    "pr_template": "- ${{TITLE}}\n${{BODY}}\n\n",
+    "template": "${{UNCATEGORIZED}}\n",
+    "pr_template": "- ${{TITLE}}\n${{BODY}}\n",
     "empty_template": "- no changes",
     "label_extractor": [],
-    "transformers": [], 
+    "transformers": [
+      {
+        "pattern": "[JEM-]+[0-9]{1,10}",
+        "target": "- $1\n"
+      }
     "max_tags_to_fetch": 200,
     "max_pull_requests": 200,
     "max_back_track_time_days": 365,
