@@ -11,7 +11,12 @@
     "pr_template": "${{TITLE}}${{BODY}}\n",
     "empty_template": "no changes",
     "label_extractor": [],
-    "transformers": [], 
+    "transformers": [
+      {
+        "pattern": "(?<=^|\\s)(?![JEM-]+[0-9]{1,10})\\S+(?=\\s|$)",
+        "target": ""
+      }
+    ],
     "tag_resolver": {
       "method": "semver",
       "filter": {
