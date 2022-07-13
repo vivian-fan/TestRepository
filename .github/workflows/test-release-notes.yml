@@ -30,7 +30,7 @@ jobs:
     steps: 
     
       - name: Override changelogConfig if hotfix
-        if: ${{ github.event.inputs.isHotfix == "true" }}
+        if: ${{ github.event.inputs.isHotfix == 'true' }}
         run: |
           echo "changelogConfig=${{ env.changelogConfigHotfix }}" >> $GITHUB_ENV
           
