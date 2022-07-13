@@ -7,9 +7,9 @@
       "order": "ASC",
       "on_property": "mergedAt"
     },
-    "template": "${{UNCATEGORIZED}}\n",
-    "pr_template": "- ${{TITLE}}\n${{BODY}}\n",
-    "empty_template": "- no changes",
+    "template": "${{UNCATEGORIZED}}",
+    "pr_template": "${{TITLE}}${{BODY}}\n",
+    "empty_template": "no changes",
     "label_extractor": [],
     "transformers": [
       {
