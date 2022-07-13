@@ -13,8 +13,8 @@
     "label_extractor": [],
     "transformers": [
       {
-        "pattern": "[JEM-]+[0-9]{1,10}",
-        "target": "- $1\n"
+        "pattern": "(?<=^|\s)(?![JEM-]+[0-9]{1,10})\S+(?=\s|$)",
+        "target": ""
       }
     ],
     "max_tags_to_fetch": 200,
