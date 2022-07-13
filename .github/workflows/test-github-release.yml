@@ -106,20 +106,27 @@ jobs:
     env:
       branch: ${{ github.ref }}
       runNumber: ${{ github.run_number }}
-      releaseSHA: ${{ needs.commit_latest_release_number.outputs.releaseSHA }}
+      githubReleaseSHA: ${{ github.sha }}
       
     steps:
-
-      - name: Step1 - Create a GitHub Release
-
+      - name: Checkout branch from Github
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ env.branch }}
+          
+      - name: Override githubReleaseSHA if required
+        if: ${{ needs.commit_latest_release_number.outputs.releaseSHA != 'null' }}
+        run: |
+          echo "githubReleaseSHA=${{ needs.commit_latest_release_number.outputs.releaseSHA }}" >> $GITHUB_ENV     
+    
+      - name: Create a GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           draft: false
           prerelease: false
-          target_commitish: ${{ needs.commit_latest_release_number.outputs.releaseSHA }}
+          target_commitish: ${{ env.githubReleaseSHA }}
           tag_name: "v${{ github.event.inputs.newReleaseNumber }}"
-          generate_release_notes: true
+          generate_release_notes: false
           
   
-
