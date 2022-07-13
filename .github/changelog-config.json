@@ -15,8 +15,7 @@
     "tag_resolver": {
       "method": "semver",
       "filter": {
-        "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.([1-9]\\d*)",
-        "flags": "gu"
+        "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.([1-9]\\d*)"
       }
     },
     "max_tags_to_fetch": 200,
