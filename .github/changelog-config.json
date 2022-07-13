@@ -1,7 +1,7 @@
 {
     "categories": [],
     "ignore_labels": [
-      "ignore","release"
+      "release"
     ],
     "sort": {
       "order": "ASC",
