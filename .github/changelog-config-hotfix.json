@@ -1,0 +1,22 @@
+{
+    "categories": [],
+    "ignore_labels": [
+      "ignore","release"
+    ],
+    "sort": {
+      "order": "ASC",
+      "on_property": "mergedAt"
+    },
+    "template": "${{UNCATEGORIZED}}\n\n",
+    "pr_template": "- ${{TITLE}}\n${{BODY}}\n\n",
+    "empty_template": "- no changes",
+    "label_extractor": [],
+    "transformers": [], 
+    "max_tags_to_fetch": 200,
+    "max_pull_requests": 200,
+    "max_back_track_time_days": 365,
+    "exclude_merge_branches": [],
+    "base_branches": [
+      "hotfix/*"
+    ]
+}
