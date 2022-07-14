@@ -56,27 +56,15 @@ jobs:
    
       - name: Update tickets using powershell 
         id: UpdateJiraTickets
+        env:                 
+          jiraUrl: ${{ secrets.JIRA_URL }}
+          jiraUser: ${{ secrets.JIRA_USER }}
+          jiraPassword: ${{ secrets.JIRA_PASSWORD }}
         shell: pwsh
         run: |
           Write-Output "Input value for Is Hotfix ${{ env.isHotfix }}"
           Write-Output "Working directory ."
           ls -a
-          ./build-and-release-app.ps1 -workDir "." -isRelease "${{ env.isRelease }}" -isHotfix "${{ env.isHotfix }}"
+          ./update-jira-tickets.ps1 -workDir "." -isHotfix "${{ env.isHotfix }}" -appTickets "${{ steps.buildChangelogApp.outputs.changelog }}" -dbTickets "" -wsTickets ""
           ls -a
-          Write-Output "===== ===== ===== ===== Create output variables from file ===== ===== ===== ===== " 
-          $fileContent = Get-Content "./sharedVariables.txt" -ErrorAction Stop                    
-          Write-Output "List of available shared variables"
-          foreach($line in $fileContent) {
-              if($line -ne $null){
-                  Write-Output "===== ===== ===== ===== ***** ===== ===== ===== ===== "   
-                  Write-Output $line    
-                  $variable = $line.Trim().Split('=')
-                  $name = $variable[0]
-                  $value = $variable[1]
-                  #Setting environment variables as well as output them to use in the next steps
-                  Set-Variable -Name "$name" -Value "$value" -Scope global
-                  echo "::set-output name=$name::$value"                    
-              }
-          }
-          Write-Output "===== ===== ===== ===== Create output variables from file complete ===== ===== ===== ===== "
-          Write-Output "Jemini release version is $jeminiReleaseVersion"
+          
