@@ -1,0 +1,82 @@
+# This workflow is used to test updating of jira tickets
+name: Test-Update-Jira-Tickets
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      newReleaseNumber:
+        description: 'Release number'
+        required: true
+      isHotfix:
+        description: 'Is hotfix'
+        required: true
+        default: 'false'  
+  
+
+#============================================================================
+####################### Update Jira Tickets  #######################
+#============================================================================
+jobs:
+  # Update Jira Tickets
+  update_jira_tickets:    
+    name: Update Jira Tickets
+    runs-on: ubuntu-latest
+    env:                 
+      branch: ${{ github.ref }}
+      changelogConfig: ".github/changelog-config.json"
+      changelogConfigHotfix: ".github/changelog-config-hotfix.json"
+      isHotfix: ${{ github.event.inputs.isHotfix }}
+
+    steps: 
+    
+      - name: Override changelogConfig if hotfix
+        if: ${{ env.isHotfix == 'true' }}
+        run: |
+          echo "changelogConfig=${{ env.changelogConfigHotfix }}" >> $GITHUB_ENV
+          
+      - name: Step1 - Checkout branch from Github
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ env.branch }}
+        
+      - name: Build Changelog
+        id: buildChangelogApp
+        uses: mikepenz/release-changelog-builder-action@v3
+        with:
+          configuration: ${{ env.changelogConfig }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          toTag: "v${{ github.event.inputs.newReleaseNumber }}" 
+          
+      - name: Output changelog
+        run: |
+          cat << "EOF"
+          ${{ steps.buildChangelogApp.outputs.changelog }}
+          EOF
+   
+      - name: Update tickets using powershell 
+        id: UpdateJiraTickets
+        shell: pwsh
+        run: |
+          Write-Output "Input value for Is Hotfix ${{ env.isHotfix }}"
+          Write-Output "Working directory ."
+          ls -a
+          ./build-and-release-app.ps1 -workDir "." -isRelease "${{ env.isRelease }}" -isHotfix "${{ env.isHotfix }}"
+          ls -a
+          Write-Output "===== ===== ===== ===== Create output variables from file ===== ===== ===== ===== " 
+          $fileContent = Get-Content "./sharedVariables.txt" -ErrorAction Stop                    
+          Write-Output "List of available shared variables"
+          foreach($line in $fileContent) {
+              if($line -ne $null){
+                  Write-Output "===== ===== ===== ===== ***** ===== ===== ===== ===== "   
+                  Write-Output $line    
+                  $variable = $line.Trim().Split('=')
+                  $name = $variable[0]
+                  $value = $variable[1]
+                  #Setting environment variables as well as output them to use in the next steps
+                  Set-Variable -Name "$name" -Value "$value" -Scope global
+                  echo "::set-output name=$name::$value"                    
+              }
+          }
+          Write-Output "===== ===== ===== ===== Create output variables from file complete ===== ===== ===== ===== "
+          Write-Output "Jemini release version is $jeminiReleaseVersion"
