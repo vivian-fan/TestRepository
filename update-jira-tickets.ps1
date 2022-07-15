@@ -3,15 +3,6 @@ param(
 [Parameter(Mandatory=$true)]
 [string] $workDir,
 
-[Parameter(Mandatory=$true)]
-[string] $jiraInstance,
-
-[Parameter(Mandatory=$true)]
-[string] $jiraUser,
-
-[Parameter(Mandatory=$true)]
-[string] $jiraPassword,
-
 [Parameter(Mandatory=$true)][ValidateSet("true", "false")]
 [string]$isHotfix,
 
@@ -26,9 +17,14 @@ param(
 
 )
 
-#### "====Local environment variables start====" ####
+#### "====Local variables ====" ####
 
-$jiraSearchString = "$workDir + /settings.xml"
+$jiraUrl = "$env:jiraUrl"
+$jiraUser = "$env:jiraUser"
+$jiraPassword = ConvertTo-SecureString "$env:jiraPassword" -AsPlainText -Force
+
+$jiraIssuesSearchString = $appTickets+$dbTickets+$wsTickets
+$jiraIssueSet = New-Object 'System.Collections.Generic.HashSet[String]'
 
 ## ============== Functions Start ============== ##
 
@@ -49,5 +45,10 @@ function isBuildFailure($result){
     }
     return $fail
 }
+
+Import-Module JiraPS
+Set-JiraConfigServer $jiraUrl
+$jiraCred = New-Object System.Management.Automation.PSCredential ($jiraUser, $jiraPassword)
+New-JiraSession -Credential $jiraCred
 
 exit 0
