@@ -54,7 +54,7 @@ jobs:
           ${{ steps.buildChangelogApp.outputs.changelog }}
           EOF
    
-      - name: Update tickets using powershell 
+      - name: Update tickets using powershell script
         id: UpdateJiraTickets
         env:                 
           jiraUrl: ${{ secrets.JIRA_URL }}
