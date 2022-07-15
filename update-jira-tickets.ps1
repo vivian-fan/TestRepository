@@ -62,15 +62,17 @@ Write-Output "result matches value :"
 $result.Matches.Value | Out-String | Write-Output
 
 if ($result.Matches.count > 0){
-
+      
+    Write-Output "Matcches GT 0"   
 
     $jiraIssueSet = New-Object 'System.Collections.Generic.HashSet[String]'
 
-    foreach($group in $result.groups) {
-        [void] $jiraIssueSet.add(${$group.value})
+    foreach($match in $result.Matches) {
+         Write-Output "adding match : $match"
+        [void] $jiraIssueSet.add(${$match.value})
     }
     
-    Write-Output "hjiraIssueSet : $jiraIssueSet"
+    Write-Output "jiraIssueSet : $jiraIssueSet"
     
     ## Setup Jira Session
     Import-Module JiraPS
