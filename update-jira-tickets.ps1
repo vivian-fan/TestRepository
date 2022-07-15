@@ -51,17 +51,16 @@ function isBuildFailure($result){
 ## =========== Search for Jira Issues =========== ##
 
 $jiraRegex = "[JEM-]+[0-9]{1,10}"
-$jiraIssuesSearchString -match $jiraRegex >$null
 
-$Matches | Out-String | Write-Output
+$result = Select-String -Path $jiraIssuesSearchString -Pattern $jiraRegex -AllMatches
 
-if ($Matches.Count > 0){
+$result.Matches | Out-String | Write-Output
+
+if ($result.Matches.count > 999){
     $jiraIssueSet = New-Object 'System.Collections.Generic.HashSet[String]'
 
-    # $Matches is HashTable(System.Collections.DictionaryEntry)
-    
-    foreach($key in $Matches.keys) {
-        [void] $jiraIssueSet.add($Matches[$key])
+    foreach($key in $matches.groups) {
+        [void] $jiraIssueSet.add($matches.groups[$key].value)
     }
     
     ## Setup Jira Session
