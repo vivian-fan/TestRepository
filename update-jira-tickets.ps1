@@ -26,6 +26,10 @@ $jiraPassword = ConvertTo-SecureString "$env:jiraPassword" -AsPlainText -Force
 
 $jiraIssuesSearchString = $appTickets+$dbTickets+$wsTickets
 
+Write-Output "JiraURL : $jiraUrl"
+Write-Output "JiraUser : $jiraUser"
+Write-Output "$env:jiraPassword"
+
 Write-Output "Jira Issue Search String : $jiraIssuesSearchString"
 
 ## ============== Functions Start ============== ##
@@ -75,7 +79,7 @@ if ($result.Matches.count -gt 0){
     Write-Output "jiraIssueSet : $jiraIssueSet"
     
     ## Setup Jira Session
-    Install-Module -Name JiraPS @optionalArgs -Scope CurrentUser -Force -Verbose
+    Install-Module -Name JiraPS -Scope CurrentUser -Force -Verbose
     
     Set-JiraConfigServer $jiraUrl
     $jiraCred = New-Object System.Management.Automation.PSCredential ($jiraUser, $jiraPassword)
