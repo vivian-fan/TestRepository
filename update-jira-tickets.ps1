@@ -26,8 +26,6 @@ $jiraPassword = ConvertTo-SecureString "$env:jiraApiToken" -AsPlainText -Force
 
 $jiraIssuesSearchString = $appTickets+$dbTickets+$wsTickets
 
-Write-Output "Jira Issue Search String : $jiraIssuesSearchString"
-
 ## ============== Functions Start ============== ##
 
 function isBuildFailure($result){
@@ -54,25 +52,17 @@ $jiraRegex = "[JEM-]+[0-9]{1,10}"
 
 $result = $jiraIssuesSearchString | Select-String $jiraRegex -AllMatches
 
-Write-Output "result matches :"
-$result.Matches | Out-String | Write-Output
-Write-Output "result matches count :"
-$result.Matches.count | Out-String | Write-Output
-Write-Output "result matches value :"
-$result.Matches.Value | Out-String | Write-Output
-
 if ($result.Matches.count -gt 0){
-      
-    Write-Output "Matches GT 0"   
 
     $jiraIssueSet = New-Object 'System.Collections.Generic.HashSet[String]'
 
     foreach($match in $result.Matches) {
-         Write-Output "adding match : $match"
-        [void] $jiraIssueSet.add(${$match.value})
+        Write-Output "adding match : $match"
+        [void] $jiraIssueSet.add($match)
     }
     
-    Write-Output "jiraIssueSet : $jiraIssueSet"
+    Write-Output "jiraIssueSet : "
+    Write-Output $jiraIssueSet
     
     ## Setup Jira Session
     Install-Module -Name JiraPS -Scope CurrentUser -Force -Verbose
@@ -83,7 +73,7 @@ if ($result.Matches.count -gt 0){
     
     #Loop through set of JIRA issue numbers 
     foreach ($jiraIssue in $jiraIssueSet) {
-        Write-Output "Processing : $jiraIssue"
+        Write-Output "Processing $jiraIssue"
     }
 }
 
