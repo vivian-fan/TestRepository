@@ -75,8 +75,7 @@ if ($result.Matches.count -gt 0){
     Write-Output "jiraIssueSet : $jiraIssueSet"
     
     ## Setup Jira Session
-    Install-Module JiraPS -Scope CurrentUser -Force -Confirm
-    Import-Module JiraPS
+    Install-Module -Name JiraPS @optionalArgs -Scope CurrentUser -Force -Verbose
     
     Set-JiraConfigServer $jiraUrl
     $jiraCred = New-Object System.Management.Automation.PSCredential ($jiraUser, $jiraPassword)
