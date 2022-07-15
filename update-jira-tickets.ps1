@@ -52,13 +52,13 @@ function isBuildFailure($result){
 
 $jiraRegex = "[JEM-]+[0-9]{1,10}"
 
-$result = [regex]::matches($jiraIssuesSearchString, $jiraRegex)
+$result = $jiraIssuesSearchString | Select-String $jiraRegex -AllMatches
 
 $result | Out-String | Write-Output
-Write-Output "result groups : ${$result.groups}"
-Write-Output "result group count : ${$result.groups.count}"
+Write-Output "result matches : ${$result.matches}"
+Write-Output "result matches count : ${$result.matches.count}"
 
-if ($result.groups.count > 0){
+if ($result.Matches.count > 0){
 
 
     $jiraIssueSet = New-Object 'System.Collections.Generic.HashSet[String]'
