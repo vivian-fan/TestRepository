@@ -1,7 +1,5 @@
 [CmdletBinding()]
 param(
-[Parameter(Mandatory=$true)]
-[string] $workDir,
 
 [Parameter(Mandatory=$true)][ValidateSet("true", "false")]
 [string]$isHotfix,
@@ -27,6 +25,8 @@ $jiraUser = "$env:jiraUser"
 $jiraPassword = ConvertTo-SecureString "$env:jiraPassword" -AsPlainText -Force
 
 $jiraIssuesSearchString = $appTickets+$dbTickets+$wsTickets
+
+Write-Output "Jira Issue Search String : $jiraIssuesSearchString"
 
 ## ============== Functions Start ============== ##
 
@@ -57,7 +57,7 @@ if ($Matches.Count > 0){
     $jiraIssueSet = New-Object 'System.Collections.Generic.HashSet[String]'
 
     # $Matches is HashTable(System.Collections.DictionaryEntry)
-    $Matches | Out-String | Write-Host
+    $Matches | Out-String | Write-Output
     foreach($key in $Matches.keys) {
         [void] $jiraIssueSet.add($Matches[$key])
     }
@@ -70,7 +70,7 @@ if ($Matches.Count > 0){
     
     #Loop through set of JIRA issue numbers 
     foreach ($jiraIssue in $jiraIssueSet) {
-        Write-Host "Processing : ${$jiraIssue}"
+        Write-Output "Processing : $jiraIssue"
     }
 }
 
