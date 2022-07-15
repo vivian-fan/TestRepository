@@ -74,7 +74,12 @@ if ($result.Matches.count -gt 0){
     #Loop through set of JIRA issue numbers 
     foreach ($jiraIssue in $jiraIssueSet) {
         Write-Output "Processing $jiraIssue"
+	
     }
+    
+    Write-Output "Processing TEST on JEM-14727"
+    $ticket = "JEM-14727"
+    Get-JiraIssue  $ticket | Add-JiraIssueComment "Test comment from Github Actions"
 }
 
 
