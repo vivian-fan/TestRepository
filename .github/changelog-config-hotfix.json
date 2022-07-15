@@ -17,7 +17,7 @@
         "target": ""
       },
       {
-        "pattern": "\\n\\r\\s",
+        "pattern": "\\s?\\n?\\r?\\R?\\t?",
         "target": ""
       }  
     ],
