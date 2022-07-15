@@ -53,11 +53,13 @@ function isBuildFailure($result){
 $jiraRegex = "[JEM-]+[0-9]{1,10}"
 $jiraIssuesSearchString -match $jiraRegex >$null
 
+$Matches | Out-String | Write-Output
+
 if ($Matches.Count > 0){
     $jiraIssueSet = New-Object 'System.Collections.Generic.HashSet[String]'
 
     # $Matches is HashTable(System.Collections.DictionaryEntry)
-    $Matches | Out-String | Write-Output
+    
     foreach($key in $Matches.keys) {
         [void] $jiraIssueSet.add($Matches[$key])
     }
