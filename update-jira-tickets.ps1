@@ -7,6 +7,9 @@ param(
 [string]$isHotfix,
 
 [Parameter(Mandatory=$true)]
+[string] $runNumber,
+
+[Parameter(Mandatory=$true)]
 [string] $appTickets,
 
 [Parameter(Mandatory=$true)]
@@ -24,7 +27,6 @@ $jiraUser = "$env:jiraUser"
 $jiraPassword = ConvertTo-SecureString "$env:jiraPassword" -AsPlainText -Force
 
 $jiraIssuesSearchString = $appTickets+$dbTickets+$wsTickets
-$jiraIssueSet = New-Object 'System.Collections.Generic.HashSet[String]'
 
 ## ============== Functions Start ============== ##
 
@@ -46,9 +48,33 @@ function isBuildFailure($result){
     return $fail
 }
 
-Import-Module JiraPS
-Set-JiraConfigServer $jiraUrl
-$jiraCred = New-Object System.Management.Automation.PSCredential ($jiraUser, $jiraPassword)
-New-JiraSession -Credential $jiraCred
+## =========== Search for Jira Issues =========== ##
+
+$jiraRegex = "[JEM-]+[0-9]{1,10}"
+$jiraIssuesSearchString -match $jiraRegex >$null
+
+if ($Matches.Count > 0){
+    $jiraIssueSet = New-Object 'System.Collections.Generic.HashSet[String]'
+
+    # $Matches is HashTable(System.Collections.DictionaryEntry)
+    $Matches | Out-String | Write-Host
+    foreach($key in $Matches.keys) {
+        [void] $jiraIssueSet.add($Matches[$key])
+    }
+    
+    ## Setup Jira Session
+    Import-Module JiraPS
+    Set-JiraConfigServer $jiraUrl
+    $jiraCred = New-Object System.Management.Automation.PSCredential ($jiraUser, $jiraPassword)
+    New-JiraSession -Credential $jiraCred
+    
+    #Loop through set of JIRA issue numbers 
+    foreach ($jiraIssue in $jiraIssueSet) {
+        Write-Host "Processing : ${$jiraIssue}"
+    }
+}
+
+
+
 
 exit 0
