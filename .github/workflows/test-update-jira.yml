@@ -60,11 +60,14 @@ jobs:
           jiraUrl: ${{ secrets.JIRA_URL }}
           jiraUser: ${{ secrets.JIRA_USER }}
           jiraPassword: ${{ secrets.JIRA_PASSWORD }}
+          runNumber: ${{ github.run_number }}
         shell: pwsh
         run: |
-          Write-Output "Input value for Is Hotfix ${{ env.isHotfix }}"
           Write-Output "Working directory ."
+          Write-Output "Input value for Is Hotfix ${{ env.isHotfix }}"
+          Write-Output "Input value for Run Number ${{ env.runNumber }}"
+          $runNumber
           ls -a
-          ./update-jira-tickets.ps1 -workDir "." -isHotfix "${{ env.isHotfix }}" -appTickets "${{ steps.buildChangelogApp.outputs.changelog }}" -dbTickets "" -wsTickets ""
+          ./update-jira-tickets.ps1 -workDir "." -isHotfix "${{ env.isHotfix }}" -runNumber "${{ env.runNumber }}" -appTickets "${{ steps.buildChangelogApp.outputs.changelog }}" -dbTickets "" -wsTickets ""
           ls -a
           
