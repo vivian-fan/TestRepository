@@ -61,9 +61,9 @@ $result.Matches.count | Out-String | Write-Output
 Write-Output "result matches value :"
 $result.Matches.Value | Out-String | Write-Output
 
-if ($result.Matches.count > 0){
+if ($result.Matches.count -gt 0){
       
-    Write-Output "Matcches GT 0"   
+    Write-Output "Matches GT 0"   
 
     $jiraIssueSet = New-Object 'System.Collections.Generic.HashSet[String]'
 
