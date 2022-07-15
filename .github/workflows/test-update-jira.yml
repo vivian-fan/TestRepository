@@ -8,10 +8,11 @@ on:
       newReleaseNumber:
         description: 'Release number'
         required: true
+        default: '1.8.1'  
       isHotfix:
         description: 'Is hotfix'
         required: true
-        default: 'false'  
+        default: 'true'  
   
 
 #============================================================================
