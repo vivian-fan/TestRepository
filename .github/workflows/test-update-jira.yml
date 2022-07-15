@@ -60,7 +60,7 @@ jobs:
         env:                 
           jiraUrl: ${{ secrets.JIRA_URL }}
           jiraUser: ${{ secrets.JIRA_USER }}
-          jiraPassword: ${{ secrets.JIRA_PASSWORD }}
+          jiraApiToken: ${{ secrets.JIRA_API_TOKEN }}
           runNumber: ${{ github.run_number }}
         shell: pwsh
         run: |
