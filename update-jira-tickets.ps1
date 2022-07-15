@@ -55,7 +55,8 @@ $jiraRegex = "[JEM-]+[0-9]{1,10}"
 $result = [regex]::matches($jiraIssuesSearchString, $jiraRegex)
 
 $result | Out-String | Write-Output
-Write-Output "result groups : $result.groups"
+Write-Output "result groups : ${$result.groups}"
+Write-Output "result group count : ${$result.groups.count}"
 
 if ($result.groups.count > 0){
 
