@@ -54,9 +54,12 @@ $jiraRegex = "[JEM-]+[0-9]{1,10}"
 
 $result = $jiraIssuesSearchString | Select-String $jiraRegex -AllMatches
 
-$result | Out-String | Write-Output
-Write-Output "result matches : ${$result.matches}"
-Write-Output "result matches count : ${$result.matches.count}"
+Write-Output "result matches :"
+$result.Matches | Out-String | Write-Output$
+Write-Output "result matches count :"
+$result.Matches.count | Out-String | Write-Output
+Write-Output "result matches value :"
+$result.Matches.Value | Out-String | Write-Output
 
 if ($result.Matches.count > 0){
 
