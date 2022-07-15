@@ -66,8 +66,6 @@ jobs:
           Write-Output "Working directory ."
           Write-Output "Input value for Is Hotfix ${{ env.isHotfix }}"
           Write-Output "Input value for Run Number ${{ env.runNumber }}"
-          $runNumber
-          ls -a
-          ./update-jira-tickets.ps1 -workDir "." -isHotfix "${{ env.isHotfix }}" -runNumber "${{ env.runNumber }}" -appTickets "${{ steps.buildChangelogApp.outputs.changelog }}" -dbTickets "" -wsTickets ""
-          ls -a
+
+          ./update-jira-tickets.ps1 -workDir "." -isHotfix "${{ env.isHotfix }}" -runNumber "${{ env.runNumber }}" -appTickets "${{ steps.buildChangelogApp.outputs.changelog }}" -dbTickets "JEM-8888" -wsTickets "JEM-2222JEM-2333"
           
