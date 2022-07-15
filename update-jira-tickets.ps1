@@ -22,13 +22,9 @@ param(
 
 $jiraUrl = "$env:jiraUrl"
 $jiraUser = "$env:jiraUser"
-$jiraPassword = ConvertTo-SecureString "$env:jiraPassword" -AsPlainText -Force
+$jiraPassword = ConvertTo-SecureString "$env:jiraApiToken" -AsPlainText -Force
 
 $jiraIssuesSearchString = $appTickets+$dbTickets+$wsTickets
-
-Write-Output "JiraURL : $jiraUrl"
-Write-Output "JiraUser : $jiraUser"
-Write-Output "$env:jiraPassword"
 
 Write-Output "Jira Issue Search String : $jiraIssuesSearchString"
 
