@@ -15,7 +15,11 @@
       {
         "pattern": "(?<=^|\\s)(?![JEM-]+[0-9]{1,10})\\S+(?=\\s|$)",
         "target": ""
-      }
+      },
+      {
+        "pattern": "\\s",
+        "target": ""
+      }  
     ],
     "tag_resolver": {
       "method": "semver",
