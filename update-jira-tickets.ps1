@@ -52,18 +52,21 @@ function isBuildFailure($result){
 
 $jiraRegex = "[JEM-]+[0-9]{1,10}"
 
-$matches = [regex]::matches($jiraIssuesSearchString, $jiraRegex)
+$result = [regex]::matches($jiraIssuesSearchString, $jiraRegex)
 
-$matches | Out-String | Write-Output
+$result | Out-String | Write-Output
+Write-Output "result groups : $result.groups"
 
-if ($matches.groups.count > 0){
+if ($result.groups.count > 0){
+
+
     $jiraIssueSet = New-Object 'System.Collections.Generic.HashSet[String]'
 
-    foreach($group in $matches.groups) {
-        [void] $jiraIssueSet.add($group.value)
+    foreach($group in $result.groups) {
+        [void] $jiraIssueSet.add(${$group.value})
     }
     
-    $jiraIssueSet | Out-String | Write-Output
+    Write-Output "hjiraIssueSet : $jiraIssueSet"
     
     ## Setup Jira Session
     Import-Module JiraPS
